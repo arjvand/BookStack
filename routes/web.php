@@ -88,6 +88,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/{bookSlug}/chapter/{chapterSlug}', 'ChapterController@update');
         Route::get('/{bookSlug}/chapter/{chapterSlug}/move', 'ChapterController@showMove');
         Route::put('/{bookSlug}/chapter/{chapterSlug}/move', 'ChapterController@move');
+        Route::get('/{bookSlug}/chapter/{chapterSlug}/convert', 'ChapterController@showConvert');
+        Route::put('/{bookSlug}/chapter/{chapterSlug}/convert', 'ChapterController@convert');
         Route::get('/{bookSlug}/chapter/{chapterSlug}/edit', 'ChapterController@edit');
         Route::get('/{bookSlug}/chapter/{chapterSlug}/permissions', 'ChapterController@showPermissions');
         Route::get('/{bookSlug}/chapter/{chapterSlug}/export/pdf', 'ChapterExportController@pdf');

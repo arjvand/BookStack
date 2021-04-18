@@ -40,6 +40,7 @@ return [
     'remove' => 'Remove',
     'add' => 'Add',
     'fullscreen' => 'Fullscreen',
+    'convert_book' => 'Convert to a Book',
 
     // Sort Options
     'sort_options' => 'Sort Options',

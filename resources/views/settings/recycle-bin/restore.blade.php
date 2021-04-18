@@ -14,6 +14,7 @@
                 {!! csrf_field() !!}
                 <a href="{{ url('/settings/recycle-bin') }}" class="button outline">{{ trans('common.cancel') }}</a>
                 <button type="submit" class="button">{{ trans('settings.recycle_bin_restore') }}</button>
+                <a href="{{ url('/settings/recycle-bin') }}" class="button">Restore parent</a>
             </form>
 
             @if($deletion->deletable instanceof \BookStack\Entities\Models\Entity)

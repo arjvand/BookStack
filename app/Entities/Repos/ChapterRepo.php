@@ -102,4 +102,26 @@ class ChapterRepo
 
         return $parent;
     }
+
+    /**
+     * Convert a chapter to a book.
+     * @throws Exception
+     */
+    public function convertToBook(Chapter $chapter)
+    {
+        $chapterData = $chapter->only(['slug','name','description']);
+        dd($chapter->tags);
+       
+        $newBook = new Book();
+        $this->baseRepo->create($newBook, $chapterData);
+        Activity::addForEntity($newBook, ActivityType::BOOK_CREATE);
+        // 
+        foreach ($chapter->pages()->withTrashed()->get() as $page) {
+            $page->chapter_id = null ;
+            $result = $page->changeBook($newBook->id);
+        }
+        Activity::addForEntity($chapter, ActivityType::CHAPTER_CONVERT);
+        $this->destroy($chapter);
+        return $newBook;
+    }
 }

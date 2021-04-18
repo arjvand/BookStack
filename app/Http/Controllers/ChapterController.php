@@ -3,6 +3,7 @@
 use BookStack\Entities\Models\Book;
 use BookStack\Entities\Tools\BookContents;
 use BookStack\Entities\Repos\ChapterRepo;
+use BookStack\Entities\Repos\BookRepo;
 use BookStack\Entities\Tools\PermissionsUpdater;
 use BookStack\Exceptions\MoveOperationException;
 use BookStack\Exceptions\NotFoundException;
@@ -171,6 +172,39 @@ class ChapterController extends Controller
 
         $this->showSuccessNotification(trans('entities.chapter_move_success', ['bookName' => $newBook->name]));
         return redirect($chapter->getUrl());
+    }
+
+    /**
+     * Show the page for converting a chapter to a book.
+     * @throws NotFoundException
+     */
+    public function showConvert(string $bookSlug, string $chapterSlug)
+    {
+        $chapter = $this->chapterRepo->getBySlug($bookSlug, $chapterSlug);
+        $this->setPageTitle(trans('entities.chapters_convert_named', ['chapterName' => $chapter->getShortName()]));
+        $this->checkOwnablePermission('chapter-update', $chapter);
+        $this->checkOwnablePermission('chapter-delete', $chapter);
+
+        return view('chapters.convert', [
+            'chapter' => $chapter
+        ]);
+    }
+
+    /**
+     * Perform the convert action for a chapter.
+     * @throws NotFoundException
+     */
+    public function convert(string $bookSlug, string $chapterSlug)
+    {
+        $chapter = $this->chapterRepo->getBySlug($bookSlug, $chapterSlug);
+        $this->checkOwnablePermission('chapter-update', $chapter);
+        $this->checkOwnablePermission('chapter-delete', $chapter);
+        $this->checkPermission('book-create-all');
+
+        $newBook = $this->chapterRepo->convertToBook($chapter);
+
+        $this->showSuccessNotification(trans('entities.chapter_convert_success', ['bookName' => $newBook->name]));
+        return redirect($newBook->getUrl());
     }
 
     /**

@@ -108,6 +108,12 @@
                     <span>{{ trans('common.move') }}</span>
                 </a>
             @endif
+            @if(userCan('chapter-update', $chapter) && userCan('chapter-delete', $chapter) && userCan('book-create-all') )
+                <a href="{{ $chapter->getUrl('/convert') }}" class="icon-list-item">
+                    <span>@icon('book')</span>
+                    <span>{{ trans('common.convert_book') }}</span>
+                </a>
+            @endif
             @if(userCan('restrictions-manage', $chapter))
                 <a href="{{ $chapter->getUrl('/permissions') }}" class="icon-list-item">
                     <span>@icon('lock')</span>
